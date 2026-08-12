@@ -1,0 +1,35 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lineGrad" x1="60" y1="380" x2="420" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00E28A"/>
+      <stop offset="100%" stop-color="#00E28A"/>
+    </linearGradient>
+    <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00E28A" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#00E28A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" rx="112" fill="#0A0D12"/>
+  <rect x="1" y="1" width="510" height="510" rx="111" fill="none" stroke="rgba(237,239,244,0.06)" stroke-width="2"/>
+
+  <!-- faint ledger hairlines -->
+  <line x1="72" y1="180" x2="440" y2="180" stroke="rgba(237,239,244,0.07)" stroke-width="2"/>
+  <line x1="72" y1="256" x2="440" y2="256" stroke="rgba(237,239,244,0.07)" stroke-width="2"/>
+  <line x1="72" y1="332" x2="440" y2="332" stroke="rgba(237,239,244,0.07)" stroke-width="2"/>
+
+  <!-- purple secondary trend (beleggingen) -->
+  <polyline points="96,368 176,336 256,300 336,224 400,160"
+    fill="none" stroke="#8C6DFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+
+  <!-- primary ascending line (vermogen groei) -->
+  <polyline points="88,392 168,356 244,332 312,268 392,176"
+    fill="none" stroke="url(#lineGrad)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- node glow -->
+  <circle cx="392" cy="176" r="54" fill="url(#nodeGlow)"/>
+
+  <!-- active tick node, matching the app's timeline marker -->
+  <circle cx="392" cy="176" r="22" fill="#0A0D12" stroke="#00E28A" stroke-width="10"/>
+</svg>

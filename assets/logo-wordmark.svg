@@ -1,0 +1,24 @@
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="nodeGlow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00E28A" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#00E28A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="640" height="160" rx="20" fill="#0A0D12"/>
+
+  <!-- icon -->
+  <g transform="translate(24,24) scale(0.21)">
+    <rect width="512" height="512" rx="112" fill="#12161F"/>
+    <polyline points="96,368 176,336 256,300 336,224 400,160"
+      fill="none" stroke="#8C6DFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    <polyline points="88,392 168,356 244,332 312,268 392,176"
+      fill="none" stroke="#00E28A" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="392" cy="176" r="54" fill="url(#nodeGlow2)"/>
+    <circle cx="392" cy="176" r="22" fill="#12161F" stroke="#00E28A" stroke-width="10"/>
+  </g>
+
+  <text x="140" y="76" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="42" fill="#EDEFF4" letter-spacing="-0.5">Grootboek</text>
+  <text x="141" y="106" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="18" fill="#8891A3">Persoonlijk vermogen bijhouden</text>
+</svg>
