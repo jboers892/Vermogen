@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vermogen</title>
+<title>Grootboek — Vermogen</title>
 <meta name="theme-color" content="#0A0D12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Vermogen">
+<meta name="apple-mobile-web-app-title" content="Grootboek">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="manifest" href="manifest.json">
@@ -42,7 +42,7 @@
     min-height:100vh;
     padding-bottom:64px;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:24px 18px 0;}
+  .wrap{max-width:960px;margin:0 auto;padding:calc(24px + env(safe-area-inset-top,0px)) 18px calc(0px + env(safe-area-inset-bottom,0px));}
   .num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
 
   .masthead{
@@ -170,7 +170,7 @@
 <div class="wrap">
 
   <div class="masthead">
-    <div class="brand"><span class="dot"></span>Vermogen</div>
+    <div class="brand"><span class="dot"></span>Grootboek</div>
     <div class="date-view" id="dateViewLabel">—</div>
   </div>
 
