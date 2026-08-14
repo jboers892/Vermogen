@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vermogen</title>
+<title>Grootboek — Vermogen</title>
 <meta name="theme-color" content="#0A0D12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Vermogen">
+<meta name="apple-mobile-web-app-title" content="Grootboek">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="manifest" href="manifest.json">
@@ -52,6 +52,9 @@
   .masthead .brand{font-size:14px;font-weight:700;letter-spacing:-0.01em;color:var(--ivory);display:flex;align-items:center;gap:8px;}
   .masthead .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
   .masthead .date-view{font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+  .masthead-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .data-actions{display:flex;gap:6px;}
+  .data-actions .btn{padding:4px 10px;font-size:11px;}
 
   .hero{padding:4px 0 20px;}
   .hero-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px;}
@@ -78,10 +81,16 @@
 
   /* Stat cards: totaal / cash / beleggingen */
   .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
-  .stat-card{background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:14px 14px 12px;}
+  .stat-card{
+    background:var(--surface);border:1px solid var(--hairline);border-radius:12px;padding:14px 14px 12px;
+    font-family:'Inter',sans-serif;text-align:left;cursor:pointer;width:100%;transition:border-color .15s ease, background .15s ease;
+    color:var(--ivory);-webkit-appearance:none;appearance:none;
+  }
+  .stat-card:hover{border-color:var(--hairline-strong);}
+  .stat-card.active{border-color:var(--ivory);background:var(--surface-2);}
   .stat-card .slabel{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
   .stat-card .slabel .sw{width:7px;height:7px;border-radius:50%;}
-  .stat-card .samount{font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:8px;}
+  .stat-card .samount{font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:8px;color:var(--ivory);}
   .stat-card .speriod{font-size:10px;color:var(--muted-dim);margin-top:6px;}
   @media(max-width:520px){
     .stat-card .samount{font-size:13px;}
@@ -114,16 +123,53 @@
 
   .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:14px;}
   @media(min-width:720px){.grid{grid-template-columns:0.85fr 1.15fr;}}
-  .card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);padding:18px;}
+  .card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+  .add-entry-card h3{margin-bottom:8px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;}
+  .add-entry-hint{font-size:12px;color:var(--muted-dim);margin:0 0 14px;line-height:1.5;}
+  .card-hint{font-size:12px;color:var(--muted-dim);margin:-10px 0 14px;line-height:1.4;}
+  .add-entry-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .compare-dates-row{display:flex;align-items:flex-end;gap:12px;margin:14px 0 18px;flex-wrap:wrap;}
+  .compare-date-field{display:flex;flex-direction:column;gap:5px;}
+  .compare-date-field label{font-size:10px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:0.06em;}
+  .compare-arrow{color:var(--muted-dim);font-size:14px;padding-bottom:9px;}
+  .compare-row{display:grid;grid-template-columns:1.3fr 0.9fr 0.9fr 1.2fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--hairline);font-size:12px;align-items:center;}
+  .compare-row:last-child{border-bottom:none;}
+  .compare-row.header{color:var(--muted-dim);font-size:10px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--hairline-strong);padding-bottom:10px;}
+  .compare-row .name{color:var(--ivory);}
+  .compare-row.indent .name{padding-left:4px;}
+  .compare-row .val{font-family:'IBM Plex Mono',monospace;text-align:right;color:var(--muted);}
+  .compare-row .delta{font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:700;}
+  .compare-row .delta.up{color:var(--green);}
+  .compare-row .delta.down{color:var(--red);}
+  .compare-row .delta.flat{color:var(--muted);}
+  .compare-row .deltapct{font-weight:500;opacity:0.75;}
+  .compare-summary{margin-top:6px;padding-top:4px;border-top:1px solid var(--hairline-strong);}
+  .compare-summary .compare-row .name{font-weight:700;}
+  @media(max-width:480px){
+    .compare-row{grid-template-columns:1.1fr 0.8fr 0.8fr 1.1fr;font-size:11px;}
+    .compare-row .deltapct{display:block;font-size:9px;}
+  }
+  .add-entry-row input[type="date"]{flex:1;min-width:150px;padding:9px 10px;font-size:13px;}
+  .add-entry-row .btn{white-space:nowrap;}
+  .grid .card{margin-bottom:0;}
   .card h3{margin:0 0 16px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;}
 
   .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
   .donut-canvas-box{position:relative;width:170px;height:170px;}
-  .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
-  .donut-center .pct{font-size:22px;font-weight:800;}
-  .donut-center .lbl{font-size:9px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:0.06em;}
+  .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding:0 14px;text-align:center;}
+  .donut-center .pct{font-size:22px;font-weight:800;line-height:1.15;}
+  .donut-center .lbl{font-size:9px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+  .donut-center .sub{font-size:11px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:10px;background:var(--surface-2);}
+  .legend-row.highlight{background:var(--surface-2);border-radius:8px;margin:0 -8px;padding:9px 8px;}
   .legend{width:100%;display:flex;flex-direction:column;gap:10px;}
+  .card-head-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .card-head-row h3{margin:0;}
   .legend-row{display:flex;align-items:center;gap:10px;font-size:13px;}
+  .legend-row-edit input.cat-name-input{
+    flex:1;background:var(--surface-2);border:1px solid var(--hairline);border-radius:8px;
+    color:var(--ivory);font-family:'Inter',sans-serif;font-size:13px;padding:7px 9px;outline:none;
+  }
+  .legend-row-edit input.cat-name-input:focus{border-color:var(--green);}
   .legend-row .sw{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
   .legend-row .name{flex:1;color:var(--ivory);}
   .legend-row .pct{color:var(--muted);width:44px;text-align:right;}
@@ -132,6 +178,12 @@
   .legend-group-title:first-child{margin-top:0;}
 
   .chart-box{height:230px;}
+  .chart-box.small{height:170px;}
+  .grid-charts{grid-template-columns:1fr;}
+  @media(min-width:720px){.grid-charts{grid-template-columns:1fr 1fr;}}
+  .sw-inline{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+  .mini-legend{display:flex;gap:14px;}
+  .mini-legend-item{font-size:11px;color:var(--muted);display:flex;align-items:center;}
 
   .editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
   .editor-head .t{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-dim);font-weight:700;}
@@ -170,8 +222,15 @@
 <div class="wrap">
 
   <div class="masthead">
-    <div class="brand"><span class="dot"></span>Vermogen</div>
-    <div class="date-view" id="dateViewLabel">—</div>
+    <div class="brand"><span class="dot"></span>Grootboek</div>
+    <div class="masthead-right">
+      <div class="date-view" id="dateViewLabel">—</div>
+      <div class="data-actions">
+        <button class="btn ghost small" id="exportBtn">Exporteren</button>
+        <button class="btn ghost small" id="importBtn">Importeren</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none;">
+      </div>
+    </div>
   </div>
 
   <div class="hero">
@@ -189,7 +248,6 @@
       <div class="t">Tijdreis</div>
       <div class="ledger-actions">
         <input type="date" id="jumpDate">
-        <button class="btn primary small" id="newEntryBtn">+ Nieuwe invoer</button>
       </div>
     </div>
     <div class="track" id="track">
@@ -211,6 +269,18 @@ let selectedDate = null;
 let selectedPeriod = 'ALL';
 let donutChart = null;
 let lineChart = null;
+let cashLineChart = null;
+let investLineChart = null;
+let stackedChart = null;
+let mutationChart = null;
+let allocationChart = null;
+let yearlyChart = null;
+let categoryEditMode = false;
+let donutFilter = 'total';
+let addEntryExpanded = false;
+let compareExpanded = false;
+let compareDateA = null;
+let compareDateB = null;
 
 const PERIODS = [
   {key:'1M', label:'1M'},
@@ -363,13 +433,21 @@ function renderStats(){
     const allG = growthPct(g.key, 'ALL', selectedDate);
     const pClass = periodG===null ? 'flat' : periodG>0 ? 'up' : periodG<0 ? 'down' : 'flat';
     const aClass = allG===null ? 'flat' : allG>0 ? 'up' : allG<0 ? 'down' : 'flat';
-    return `<div class="stat-card">
+    const active = donutFilter===g.key ? ' active' : '';
+    return `<button type="button" class="stat-card${active}" data-group="${g.key}">
       <div class="slabel">${g.key!=='total' ? `<span class="sw" style="background:${g.color}"></span>`:''}${g.label}</div>
       <div class="samount">${fmtMoney(amount)}</div>
       <span class="badge ${pClass}">${periodG===null ? '—' : fmtPct(periodG)}</span>
       <div class="speriod">All-time: <span class="badge ${aClass}" style="padding:2px 6px;">${allG===null?'—':fmtPct(allG)}</span></div>
-    </div>`;
+    </button>`;
   }).join('');
+  grid.querySelectorAll('.stat-card').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      donutFilter = btn.dataset.group;
+      renderStats();
+      renderDonut();
+    });
+  });
 }
 
 /* ---------- Ledger scrubber ---------- */
@@ -409,16 +487,52 @@ function renderHero(){
   const idx = dates.indexOf(selectedDate);
   const deltaEl = document.getElementById('heroDelta');
   if(idx > 0){
-    const prevTotal = totalForDate(dates[idx-1]);
-    const diff = total - prevTotal;
-    const pct = prevTotal !== 0 ? (diff/Math.abs(prevTotal))*100 : 0;
-    deltaEl.innerHTML = `<span class="badge ${diff>0?'up':diff<0?'down':'flat'}">${fmtPct(pct)}</span> <span style="color:var(--muted);margin-left:6px;">${diff>=0?'+':'−'}${fmtMoney(Math.abs(diff))} t.o.v. ${fmtDateShort(dates[idx-1])}</span>`;
+    const firstTotal = totalForDate(dates[0]);
+    const diff = total - firstTotal;
+    const pct = firstTotal !== 0 ? (diff/Math.abs(firstTotal))*100 : 0;
+    deltaEl.innerHTML = `<span class="badge ${diff>0?'up':diff<0?'down':'flat'}">${fmtPct(pct)}</span> <span style="color:var(--muted);margin-left:6px;">${diff>=0?'+':'−'}${fmtMoney(Math.abs(diff))} t.o.v. eerste invoer (${fmtDateShort(dates[0])})</span>`;
   } else if(dates.length>0){
     deltaEl.innerHTML = `<span style="color:var(--muted-dim);">Eerste invoer in dit grootboek</span>`;
   } else { deltaEl.textContent = ''; }
 }
 
 /* ---------- Donut ---------- */
+function hexToHsl(hex){
+  let r=parseInt(hex.slice(1,3),16)/255, g=parseInt(hex.slice(3,5),16)/255, b=parseInt(hex.slice(5,7),16)/255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){ h=0; s=0; }
+  else{
+    const d=max-min;
+    s = l>0.5 ? d/(2-max-min) : d/(max+min);
+    if(max===r) h=(g-b)/d+(g<b?6:0);
+    else if(max===g) h=(b-r)/d+2;
+    else h=(r-g)/d+4;
+    h*=60;
+  }
+  return {h, s:s*100, l:l*100};
+}
+function hslToHex(h,s,l){
+  s/=100; l/=100;
+  const c=(1-Math.abs(2*l-1))*s, x=c*(1-Math.abs((h/60)%2-1)), m=l-c/2;
+  let r,g,b;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;} else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;} else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+  const toHex=(v)=>Math.round((v+m)*255).toString(16).padStart(2,'0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+function paletteFor(baseHex, n){
+  if(n<=1) return [baseHex];
+  const {h,s,l} = hexToHsl(baseHex);
+  const colors = [];
+  for(let i=0;i<n;i++){
+    const t = n===1 ? 0 : i/(n-1);
+    const lightness = 40 + t*38; // spreads from darker to lighter
+    colors.push(hslToHex(h, s, lightness));
+  }
+  return colors;
+}
+
 function renderDonut(){
   const box = document.getElementById('donutCanvas');
   if(!box) return;
@@ -427,65 +541,203 @@ function renderDonut(){
   const cashTotal = cats.filter(c=>c.group==='cash').reduce((a,c)=>a+(Number(snap[c.id])||0),0);
   const investTotal = cats.filter(c=>c.group==='invest').reduce((a,c)=>a+(Number(snap[c.id])||0),0);
   const grand = cashTotal+investTotal;
-  const data = [Math.max(cashTotal,0), Math.max(investTotal,0)];
-  const hasData = grand !== 0;
   if(donutChart) donutChart.destroy();
   const ctx = box.getContext('2d');
-  donutChart = new Chart(ctx, {
-    type:'doughnut',
-    data:{ labels:['Cash','Beleggingen'], datasets:[{
-      data: hasData ? data : [1,1],
-      backgroundColor: hasData ? ['#00E28A','#8C6DFF'] : ['#181D29','#181D29'],
-      borderColor: '#12161F', borderWidth: 3, hoverOffset: 4,
-    }]},
-    options:{ cutout:'72%',
-      plugins:{legend:{display:false}, tooltip:{enabled:hasData, callbacks:{label:(c)=>' '+c.label+': '+fmtMoney(c.raw)}}},
-      animation:{duration:400},
-    }
-  });
   const centerPct = document.querySelector('#donutCenterPct');
   const centerLbl = document.querySelector('#donutCenterLbl');
-  if(grand > 0){ centerPct.textContent = Math.round((cashTotal/grand)*100)+'%'; centerLbl.textContent = 'cash'; }
-  else { centerPct.textContent = '—'; centerLbl.textContent = 'geen data'; }
+  const centerSub = document.querySelector('#donutCenterSub');
+
+  function highlightLegendRows(matchFn){
+    document.querySelectorAll('#legendBox .legend-row').forEach(row=>{
+      row.classList.toggle('highlight', matchFn ? matchFn(row) : false);
+    });
+  }
+
+  if(donutFilter === 'total'){
+    const data = [Math.max(cashTotal,0), Math.max(investTotal,0)];
+    const hasData = grand !== 0;
+    const showDefault = ()=>{
+      centerPct.style.fontSize = '';
+      centerSub.style.display = 'none';
+      if(grand > 0){ centerPct.textContent = Math.round((cashTotal/grand)*100)+'%'; centerLbl.textContent = 'cash'; }
+      else { centerPct.textContent = '—'; centerLbl.textContent = 'geen data'; }
+      highlightLegendRows(null);
+    };
+    donutChart = new Chart(ctx, {
+      type:'doughnut',
+      data:{ labels:['Cash','Beleggingen'], datasets:[{
+        data: hasData ? data : [1,1],
+        backgroundColor: hasData ? ['#00E28A','#8C6DFF'] : ['#181D29','#181D29'],
+        borderColor: '#12161F', borderWidth: 3, hoverOffset: 4,
+      }]},
+      options:{ cutout:'72%',
+        plugins:{legend:{display:false}, tooltip:{enabled:false}},
+        animation:{duration:400},
+        onHover:(evt, active)=>{
+          if(!hasData){ return; }
+          if(active && active.length>0){
+            const idx = active[0].index;
+            const group = idx===0 ? 'cash' : 'invest';
+            const val = idx===0 ? cashTotal : investTotal;
+            const pct = grand!==0 ? (val/grand*100) : 0;
+            centerPct.style.fontSize = '15px';
+            centerPct.textContent = fmtMoney(val);
+            centerLbl.textContent = group==='cash' ? 'Cash' : 'Beleggingen';
+            centerSub.style.display = '';
+            centerSub.style.color = group==='cash' ? '#00E28A' : '#8C6DFF';
+            centerSub.textContent = pct.toFixed(0)+'% van totaal';
+            highlightLegendRows(row=>row.dataset.group===group);
+          } else {
+            showDefault();
+          }
+        }
+      }
+    });
+    showDefault();
+  } else {
+    const groupCats = cats.filter(c=>c.group===donutFilter);
+    const groupTotal = donutFilter==='cash' ? cashTotal : investTotal;
+    const baseColor = donutFilter==='cash' ? '#00E28A' : '#8C6DFF';
+    const values = groupCats.map(c=>Math.max(Number(snap[c.id])||0,0));
+    const hasData = groupTotal > 0;
+    const colors = paletteFor(baseColor, Math.max(groupCats.length,1));
+    const showDefault = ()=>{
+      centerPct.style.fontSize = '15px';
+      centerPct.textContent = hasData ? fmtMoney(groupTotal) : '—';
+      centerLbl.textContent = donutFilter==='cash' ? 'totaal cash' : 'totaal beleggingen';
+      centerSub.style.display = 'none';
+      highlightLegendRows(null);
+    };
+    donutChart = new Chart(ctx, {
+      type:'doughnut',
+      data:{ labels: groupCats.map(c=>c.name), datasets:[{
+        data: hasData ? values : [1],
+        backgroundColor: hasData ? colors : ['#181D29'],
+        borderColor: '#12161F', borderWidth: 3, hoverOffset: 4,
+      }]},
+      options:{ cutout:'72%',
+        plugins:{legend:{display:false}, tooltip:{enabled:false}},
+        animation:{duration:400},
+        onHover:(evt, active)=>{
+          if(!hasData){ return; }
+          if(active && active.length>0){
+            const idx = active[0].index;
+            const cat = groupCats[idx];
+            const val = values[idx];
+            const pct = groupTotal!==0 ? (val/groupTotal*100) : 0;
+            centerPct.style.fontSize = '14px';
+            centerPct.textContent = fmtMoney(val);
+            centerLbl.textContent = cat ? cat.name : '';
+            centerSub.style.display = '';
+            centerSub.style.color = colors[idx];
+            centerSub.textContent = pct.toFixed(0)+'% van totaal';
+            highlightLegendRows(row=>Number(row.dataset.idx)===idx);
+          } else {
+            showDefault();
+          }
+        }
+      }
+    });
+    showDefault();
+  }
+
   const legend = document.getElementById('legendBox');
   legend.innerHTML = '';
-  ['cash','invest'].forEach(group=>{
+
+  if(categoryEditMode){
+    ['cash','invest'].forEach(group=>{
+      const groupCats = cats.filter(c=>c.group===group);
+      const gTitle = document.createElement('div');
+      gTitle.className = 'legend-group-title';
+      gTitle.textContent = group==='cash' ? 'Cash posities' : 'Overige investeringen';
+      legend.appendChild(gTitle);
+      groupCats.forEach(c=>{
+        const row = document.createElement('div');
+        row.className = 'legend-row legend-row-edit';
+        row.innerHTML = `<div class="sw" style="background:${group==='cash'?'#00E28A':'#8C6DFF'}"></div>
+          <input class="cat-name-input" data-catid="${c.id}" value="${escapeAttr(c.name)}" placeholder="Naam">
+          <button class="row-del" data-catid="${c.id}" title="Verwijder categorie">×</button>`;
+        legend.appendChild(row);
+      });
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-cat';
+      addBtn.textContent = '+ Categorie toevoegen';
+      addBtn.addEventListener('click', ()=>{
+        state.categories.push({id:uid(), name:'Nieuwe categorie', group});
+        saveState();
+        renderDonut();
+      });
+      legend.appendChild(addBtn);
+    });
+    legend.querySelectorAll('.cat-name-input').forEach(inp=>{
+      inp.addEventListener('change', (e)=>{
+        const cat = state.categories.find(c=>c.id===e.target.dataset.catid);
+        if(cat){ cat.name = e.target.value || cat.name; saveState(); renderEditor(); }
+      });
+    });
+    legend.querySelectorAll('.row-del').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{
+        const catId = e.target.dataset.catid;
+        if(!confirm('Deze categorie verwijderen? Dit verwijdert hem ook uit alle eerdere invoer.')) return;
+        state.categories = state.categories.filter(c=>c.id!==catId);
+        Object.keys(state.snapshots).forEach(d=> delete state.snapshots[d][catId]);
+        saveState();
+        renderAll();
+      });
+    });
+    return;
+  }
+
+  const groupsToShow = donutFilter==='total' ? ['cash','invest'] : [donutFilter];
+  const denom = donutFilter==='total' ? grand : (donutFilter==='cash' ? cashTotal : investTotal);
+  groupsToShow.forEach(group=>{
     const groupCats = cats.filter(c=>c.group===group);
     if(groupCats.length===0) return;
-    const gTitle = document.createElement('div');
-    gTitle.className = 'legend-group-title';
-    gTitle.textContent = group==='cash' ? 'Cash posities' : 'Overige investeringen';
-    legend.appendChild(gTitle);
-    groupCats.forEach(c=>{
+    if(donutFilter==='total'){
+      const gTitle = document.createElement('div');
+      gTitle.className = 'legend-group-title';
+      gTitle.textContent = group==='cash' ? 'Cash posities' : 'Overige investeringen';
+      legend.appendChild(gTitle);
+    }
+    const palette = donutFilter==='total' ? null : paletteFor(group==='cash'?'#00E28A':'#8C6DFF', groupCats.length);
+    groupCats.forEach((c,i)=>{
       const val = Number(snap[c.id])||0;
-      const pct = grand!==0 ? (val/grand*100) : 0;
+      const pct = denom!==0 ? (val/denom*100) : 0;
+      const swColor = donutFilter==='total' ? (group==='cash'?'#00E28A':'#8C6DFF') : palette[i];
       const row = document.createElement('div');
       row.className = 'legend-row';
-      row.innerHTML = `<div class="sw" style="background:${group==='cash'?'#00E28A':'#8C6DFF'}"></div>
+      row.dataset.group = group;
+      row.dataset.idx = i;
+      row.innerHTML = `<div class="sw" style="background:${swColor}"></div>
         <div class="name">${escapeHtml(c.name)}</div>
-        <div class="pct">${grand!==0 ? pct.toFixed(0)+'%' : '—'}</div>
+        <div class="pct">${denom!==0 ? pct.toFixed(0)+'%' : '—'}</div>
         <div class="amt num">${fmtMoney(val)}</div>`;
       legend.appendChild(row);
     });
   });
 }
 
-/* ---------- Line chart ---------- */
-function renderLineChart(){
-  const box = document.getElementById('lineCanvas');
-  if(!box) return;
+/* ---------- Line charts (totaal / cash / beleggingen) ---------- */
+function seriesValue(date, key){
+  if(key==='total') return totalForDate(date);
+  return groupTotalAt(date, key);
+}
+function renderTimeSeriesChart(canvasId, key, color, existingChartRef){
+  const box = document.getElementById(canvasId);
+  if(!box) return null;
   const dates = sortedDates();
-  if(lineChart) lineChart.destroy();
+  if(existingChartRef) existingChartRef.destroy();
   const ctx = box.getContext('2d');
-  const gradient = ctx.createLinearGradient(0,0,0,230);
-  gradient.addColorStop(0, 'rgba(0,226,138,0.28)');
-  gradient.addColorStop(1, 'rgba(0,226,138,0.0)');
-  lineChart = new Chart(ctx, {
+  const rgb = color === '#00E28A' ? '0,226,138' : color === '#8C6DFF' ? '140,109,255' : '237,239,244';
+  const gradient = ctx.createLinearGradient(0,0,0,190);
+  gradient.addColorStop(0, `rgba(${rgb},0.28)`);
+  gradient.addColorStop(1, `rgba(${rgb},0.0)`);
+  const chart = new Chart(ctx, {
     type:'line',
     data:{ labels: dates.map(d=>fmtDateShort(d)), datasets:[{
-      data: dates.map(d=>totalForDate(d)),
-      borderColor:'#00E28A', backgroundColor:gradient,
-      pointBackgroundColor: dates.map(d=> d===selectedDate ? '#EDEFF4' : '#00E28A'),
+      data: dates.map(d=>seriesValue(d,key)),
+      borderColor:color, backgroundColor:gradient,
+      pointBackgroundColor: dates.map(d=> d===selectedDate ? '#EDEFF4' : color),
       pointRadius: dates.map(d=> d===selectedDate ? 5 : 3),
       pointHoverRadius:6, borderWidth:2, fill:true, tension:0.3,
     }]},
@@ -498,6 +750,235 @@ function renderLineChart(){
       onClick:(evt,elements)=>{ if(elements.length>0){ selectDate(dates[elements[0].index]); } }
     }
   });
+  return chart;
+}
+function renderLineChart(){ lineChart = renderTimeSeriesChart('lineCanvas', 'total', '#00E28A', lineChart); }
+function renderCashLineChart(){ cashLineChart = renderTimeSeriesChart('cashLineCanvas', 'cash', '#00E28A', cashLineChart); }
+function renderInvestLineChart(){ investLineChart = renderTimeSeriesChart('investLineCanvas', 'invest', '#8C6DFF', investLineChart); }
+
+function renderStackedChart(){
+  const box = document.getElementById('stackedCanvas');
+  if(!box) return;
+  const dates = sortedDates();
+  if(stackedChart) stackedChart.destroy();
+  const ctx = box.getContext('2d');
+  const cashGrad = ctx.createLinearGradient(0,0,0,230);
+  cashGrad.addColorStop(0, 'rgba(0,226,138,0.55)');
+  cashGrad.addColorStop(1, 'rgba(0,226,138,0.12)');
+  const investGrad = ctx.createLinearGradient(0,0,0,230);
+  investGrad.addColorStop(0, 'rgba(140,109,255,0.55)');
+  investGrad.addColorStop(1, 'rgba(140,109,255,0.12)');
+  stackedChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels: dates.map(d=>fmtDateShort(d)), datasets:[
+      { label:'Cash', data: dates.map(d=>groupTotalAt(d,'cash')),
+        borderColor:'#00E28A', backgroundColor:cashGrad,
+        pointBackgroundColor: dates.map(d=> d===selectedDate ? '#EDEFF4' : '#00E28A'),
+        pointRadius: dates.map(d=> d===selectedDate ? 5 : 3),
+        pointHoverRadius:6, borderWidth:2, fill:'origin', tension:0.3, stack:'wealth' },
+      { label:'Beleggingen', data: dates.map(d=>groupTotalAt(d,'invest')),
+        borderColor:'#8C6DFF', backgroundColor:investGrad,
+        pointBackgroundColor: dates.map(d=> d===selectedDate ? '#EDEFF4' : '#8C6DFF'),
+        pointRadius: dates.map(d=> d===selectedDate ? 5 : 3),
+        pointHoverRadius:6, borderWidth:2, fill:'-1', tension:0.3, stack:'wealth' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{
+        mode:'index', intersect:false,
+        callbacks:{
+          label:(c)=> ' '+c.dataset.label+': '+fmtMoney(c.raw),
+          footer:(items)=> 'Totaal: '+fmtMoney(items.reduce((a,i)=>a+i.raw,0)),
+        }
+      }},
+      interaction:{mode:'index', intersect:false},
+      scales:{
+        x:{stacked:true, ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}}, grid:{color:'rgba(237,239,244,0.04)'}},
+        y:{stacked:true, ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}, callback:(v)=>fmtMoney(v)}, grid:{color:'rgba(237,239,244,0.04)'}}
+      },
+      onClick:(evt,elements)=>{ if(elements.length>0){ selectDate(dates[elements[0].index]); } }
+    }
+  });
+}
+
+/* ---------- Mutatie per periode ---------- */
+function renderMutationChart(){
+  const box = document.getElementById('mutationCanvas');
+  if(!box) return;
+  const dates = sortedDates();
+  if(mutationChart) mutationChart.destroy();
+  if(dates.length < 2) return;
+  const ctx = box.getContext('2d');
+  const deltas = [];
+  for(let i=1;i<dates.length;i++){
+    deltas.push({ label: fmtDateShort(dates[i]), value: totalForDate(dates[i]) - totalForDate(dates[i-1]), date: dates[i] });
+  }
+  mutationChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels: deltas.map(d=>d.label), datasets:[{
+      data: deltas.map(d=>d.value),
+      backgroundColor: deltas.map(d=> d.value>=0 ? 'rgba(0,226,138,0.75)' : 'rgba(255,92,92,0.75)'),
+      borderRadius:5, maxBarThickness:34,
+    }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{
+        title:(items)=> 'Mutatie t/m ' + items[0].label,
+        label:(c)=> (c.raw>=0?'+':'−') + fmtMoney(Math.abs(c.raw))
+      }}},
+      scales:{
+        x:{ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}}, grid:{display:false}},
+        y:{ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}, callback:(v)=>fmtMoney(v)}, grid:{color:'rgba(237,239,244,0.04)'}}
+      },
+      onClick:(evt,elements)=>{ if(elements.length>0){ selectDate(deltas[elements[0].index].date); } }
+    }
+  });
+}
+
+/* ---------- Allocatie-drift ---------- */
+function renderAllocationChart(){
+  const box = document.getElementById('allocationCanvas');
+  if(!box) return;
+  const dates = sortedDates();
+  if(allocationChart) allocationChart.destroy();
+  if(dates.length === 0) return;
+  const ctx = box.getContext('2d');
+  const cashGrad = ctx.createLinearGradient(0,0,0,230);
+  cashGrad.addColorStop(0, 'rgba(0,226,138,0.5)');
+  cashGrad.addColorStop(1, 'rgba(0,226,138,0.15)');
+  const investGrad = ctx.createLinearGradient(0,0,0,230);
+  investGrad.addColorStop(0, 'rgba(140,109,255,0.5)');
+  investGrad.addColorStop(1, 'rgba(140,109,255,0.15)');
+  const cashPct = dates.map(d=>{ const t=totalForDate(d); return t!==0 ? (groupTotalAt(d,'cash')/t*100) : 0; });
+  const investPct = dates.map(d=>{ const t=totalForDate(d); return t!==0 ? (groupTotalAt(d,'invest')/t*100) : 0; });
+  allocationChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels: dates.map(d=>fmtDateShort(d)), datasets:[
+      { label:'Cash', data: cashPct, borderColor:'#00E28A', backgroundColor:cashGrad,
+        pointRadius: dates.map(d=> d===selectedDate ? 5 : 2), pointBackgroundColor:'#00E28A',
+        borderWidth:2, fill:'origin', tension:0.3, stack:'alloc' },
+      { label:'Beleggingen', data: investPct, borderColor:'#8C6DFF', backgroundColor:investGrad,
+        pointRadius: dates.map(d=> d===selectedDate ? 5 : 2), pointBackgroundColor:'#8C6DFF',
+        borderWidth:2, fill:'-1', tension:0.3, stack:'alloc' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{
+        mode:'index', intersect:false,
+        callbacks:{ label:(c)=> ' '+c.dataset.label+': '+c.raw.toFixed(0)+'%' }
+      }},
+      interaction:{mode:'index', intersect:false},
+      scales:{
+        x:{stacked:true, ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}}, grid:{display:false}},
+        y:{stacked:true, min:0, max:100, ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}, callback:(v)=>v+'%'}, grid:{color:'rgba(237,239,244,0.04)'}}
+      },
+      onClick:(evt,elements)=>{ if(elements.length>0){ selectDate(dates[elements[0].index]); } }
+    }
+  });
+}
+
+/* ---------- Jaarvergelijking ---------- */
+function renderYearlyChart(){
+  const box = document.getElementById('yearlyCanvas');
+  if(!box) return;
+  const dates = sortedDates();
+  if(yearlyChart) yearlyChart.destroy();
+  if(dates.length === 0) return;
+  const ctx = box.getContext('2d');
+  const firstYear = Number(dates[0].slice(0,4));
+  const nowYear = Number(todayISO().slice(0,4));
+  const bars = [];
+  for(let y=firstYear; y<=nowYear; y++){
+    const target = `${y}-01-01`;
+    if(target < dates[0]) continue;
+    const snapDate = nearestSnapshotOnOrBefore(target);
+    if(snapDate) bars.push({ label:'1 jan '+y, value: totalForDate(snapDate), date: snapDate });
+  }
+  const lastDate = dates[dates.length-1];
+  const lastLabel = fmtDateShort(lastDate) + ' (nu)';
+  if(bars.length===0 || bars[bars.length-1].date !== lastDate){
+    bars.push({ label:lastLabel, value: totalForDate(lastDate), date:lastDate });
+  }
+  yearlyChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels: bars.map(b=>b.label), datasets:[{
+      data: bars.map(b=>b.value),
+      backgroundColor: bars.map((b,i)=> i===0 ? 'rgba(237,239,244,0.3)' : (b.value>=bars[i-1].value ? 'rgba(0,226,138,0.75)' : 'rgba(255,92,92,0.75)')),
+      borderRadius:6, maxBarThickness:44,
+    }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{ label:(c)=>fmtMoney(c.raw) }}},
+      scales:{
+        x:{ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}}, grid:{display:false}},
+        y:{ticks:{color:'#5B6377',font:{family:'IBM Plex Mono',size:10}, callback:(v)=>fmtMoney(v)}, grid:{color:'rgba(237,239,244,0.04)'}}
+      },
+      onClick:(evt,elements)=>{
+        const b = bars[elements[0]?.index];
+        if(b && b.date) selectDate(b.date);
+      }
+    }
+  });
+}
+
+/* ---------- Vergelijk-modus ---------- */
+function initCompareDates(){
+  const dates = sortedDates();
+  if(dates.length===0) return;
+  if(!compareDateB || !state.snapshots[compareDateB]) compareDateB = selectedDate || dates[dates.length-1];
+  if(!compareDateA || !state.snapshots[compareDateA]){
+    const target = periodStartISO('1J', compareDateB) || dates[0];
+    compareDateA = nearestSnapshotOnOrBefore(target) || dates[0];
+  }
+}
+function renderCompare(){
+  const container = document.getElementById('compareBody');
+  if(!container) return;
+  initCompareDates();
+  const dateAInput = document.getElementById('compareDateA');
+  const dateBInput = document.getElementById('compareDateB');
+  if(dateAInput) dateAInput.value = compareDateA;
+  if(dateBInput) dateBInput.value = compareDateB;
+
+  const snapA = state.snapshots[compareDateA] || {};
+  const snapB = state.snapshots[compareDateB] || {};
+  const cats = state.categories;
+
+  function deltaRow(name, valA, valB, indent){
+    const delta = valB - valA;
+    const pct = valA !== 0 ? (delta/Math.abs(valA)*100) : null;
+    const cls = delta>0 ? 'up' : delta<0 ? 'down' : 'flat';
+    return `<div class="compare-row${indent?' indent':''}">
+      <div class="name">${escapeHtml(name)}</div>
+      <div class="val">${fmtMoney(valA)}</div>
+      <div class="val">${fmtMoney(valB)}</div>
+      <div class="delta ${cls}">${delta>=0?'+':'−'}${fmtMoney(Math.abs(delta))}${pct!==null ? `<span class="deltapct"> (${pct>=0?'+':'−'}${Math.abs(pct).toFixed(0)}%)</span>` : ''}</div>
+    </div>`;
+  }
+
+  let html = `<div class="compare-row header">
+    <div class="name">Rekening</div>
+    <div class="val">${fmtDateShort(compareDateA)}</div>
+    <div class="val">${fmtDateShort(compareDateB)}</div>
+    <div class="delta">Verschil</div>
+  </div>`;
+
+  ['cash','invest'].forEach(group=>{
+    const groupCats = cats.filter(c=>c.group===group);
+    if(groupCats.length===0) return;
+    html += `<div class="legend-group-title">${group==='cash' ? 'Cash posities' : 'Overige investeringen'}</div>`;
+    groupCats.forEach(c=>{
+      html += deltaRow(c.name, Number(snapA[c.id])||0, Number(snapB[c.id])||0, true);
+    });
+  });
+
+  const cashA = groupTotalAt(compareDateA,'cash'), cashB = groupTotalAt(compareDateB,'cash');
+  const investA = groupTotalAt(compareDateA,'invest'), investB = groupTotalAt(compareDateB,'invest');
+  const totalA = totalForDate(compareDateA), totalB = totalForDate(compareDateB);
+
+  html += `<div class="compare-summary">
+    ${deltaRow('Totaal cash', cashA, cashB, false)}
+    ${deltaRow('Totaal beleggingen', investA, investB, false)}
+    ${deltaRow('Totaal vermogen', totalA, totalB, false)}
+  </div>`;
+
+  container.innerHTML = html;
 }
 
 /* ---------- Editor ---------- */
@@ -583,29 +1064,143 @@ function renderMain(){
       <p>Begin met je eerste invoer om de verdeling en tijdlijn te zien.</p>
       <button class="btn primary" id="emptyAddBtn">+ Eerste invoer toevoegen</button>
     </div>`;
-    document.getElementById('emptyAddBtn').addEventListener('click', ()=> newEntry(todayISO()));
+    document.getElementById('emptyAddBtn').addEventListener('click', ()=>{
+      addEntryExpanded = true;
+      newEntry(todayISO());
+    });
     return;
   }
   main.innerHTML = `
     <div class="grid">
       <div class="card">
-        <h3>Verdeling op ${fmtDateShort(selectedDate)}</h3>
+        <div class="card-head-row">
+          <h3>${donutFilter==='total' ? 'Verdeling' : donutFilter==='cash' ? 'Cash — verdeling' : 'Beleggingen — verdeling'} op ${fmtDateShort(selectedDate)}</h3>
+          <button class="btn small" id="editCatsBtn">${categoryEditMode ? 'Klaar' : 'Wijzigen'}</button>
+        </div>
         <div class="donut-wrap">
           <div class="donut-canvas-box">
             <canvas id="donutCanvas"></canvas>
-            <div class="donut-center"><div class="pct" id="donutCenterPct">—</div><div class="lbl" id="donutCenterLbl"></div></div>
+            <div class="donut-center"><div class="pct" id="donutCenterPct">—</div><div class="lbl" id="donutCenterLbl"></div><div class="sub" id="donutCenterSub" style="display:none;"></div></div>
           </div>
           <div class="legend" id="legendBox"></div>
         </div>
       </div>
       <div class="card">
-        <h3>Vermogen over tijd</h3>
-        <div class="chart-box"><canvas id="lineCanvas"></canvas></div>
+        <div class="card-head-row">
+          <h3>Vermogen over tijd</h3>
+          <div class="mini-legend">
+            <span class="mini-legend-item"><span class="sw-inline" style="background:#00E28A"></span>Cash</span>
+            <span class="mini-legend-item"><span class="sw-inline" style="background:#8C6DFF"></span>Beleggingen</span>
+          </div>
+        </div>
+        <div class="chart-box"><canvas id="stackedCanvas"></canvas></div>
       </div>
     </div>
-    <div class="card" id="editorCard"></div>
+    <div class="grid grid-charts">
+      <div class="card">
+        <h3><span class="sw-inline" style="background:#00E28A"></span>Cash over tijd</h3>
+        <div class="chart-box small"><canvas id="cashLineCanvas"></canvas></div>
+      </div>
+      <div class="card">
+        <h3><span class="sw-inline" style="background:#8C6DFF"></span>Beleggingen over tijd</h3>
+        <div class="chart-box small"><canvas id="investLineCanvas"></canvas></div>
+      </div>
+    </div>
+    <div class="grid grid-charts">
+      <div class="card">
+        <h3>Mutatie per periode</h3>
+        <p class="card-hint">Toe- of afname tussen elke twee vastgelegde momenten.</p>
+        <div class="chart-box small"><canvas id="mutationCanvas"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-head-row">
+          <h3>Allocatie-drift</h3>
+          <div class="mini-legend">
+            <span class="mini-legend-item"><span class="sw-inline" style="background:#00E28A"></span>Cash</span>
+            <span class="mini-legend-item"><span class="sw-inline" style="background:#8C6DFF"></span>Beleggingen</span>
+          </div>
+        </div>
+        <div class="chart-box small"><canvas id="allocationCanvas"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Jaarvergelijking</h3>
+      <p class="card-hint">Vermogen rond 1 januari van elk jaar, plus de meest recente stand.</p>
+      <div class="chart-box"><canvas id="yearlyCanvas"></canvas></div>
+    </div>
+    <div class="card compare-card">
+      <div class="card-head-row">
+        <h3>Vergelijken</h3>
+        <button class="btn small${compareExpanded ? '' : ' primary'}" id="toggleCompareBtn">${compareExpanded ? 'Sluiten' : 'Vergelijk momenten'}</button>
+      </div>
+      ${compareExpanded ? `
+        <div class="compare-dates-row">
+          <div class="compare-date-field">
+            <label>Moment A</label>
+            <input type="date" id="compareDateA">
+          </div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-date-field">
+            <label>Moment B</label>
+            <input type="date" id="compareDateB">
+          </div>
+        </div>
+        <div id="compareBody"></div>
+      ` : ''}
+    </div>
+    <div class="card add-entry-card">
+      <div class="card-head-row">
+        <h3>Nieuwe invoer</h3>
+        <button class="btn small${addEntryExpanded ? '' : ' primary'}" id="toggleAddEntryBtn">${addEntryExpanded ? 'Sluiten' : '+ Nieuwe invoer'}</button>
+      </div>
+      ${addEntryExpanded ? `
+        <p class="add-entry-hint">Kies een datum — ook in het verleden — om een stand vast te leggen of te bewerken. De categorieën hieronder werken automatisch mee met de gekozen datum.</p>
+        <div class="add-entry-row">
+          <input type="date" id="newEntryDate">
+        </div>
+        <div id="editorCard"></div>
+      ` : ''}
+    </div>
   `;
-  renderDonut(); renderLineChart(); renderEditor();
+  const toggleBtn = document.getElementById('toggleAddEntryBtn');
+  toggleBtn.addEventListener('click', ()=>{
+    addEntryExpanded = !addEntryExpanded;
+    if(addEntryExpanded && !selectedDate){ /* safety: pick most recent */ selectedDate = sortedDates().slice(-1)[0]; }
+    renderMain();
+  });
+  if(addEntryExpanded){
+    const dateInput = document.getElementById('newEntryDate');
+    dateInput.value = selectedDate || todayISO();
+    dateInput.addEventListener('change', (e)=>{
+      newEntry(e.target.value || todayISO());
+    });
+  }
+  document.getElementById('editCatsBtn').addEventListener('click', ()=>{
+    categoryEditMode = !categoryEditMode;
+    renderMain();
+  });
+  document.getElementById('toggleCompareBtn').addEventListener('click', ()=>{
+    compareExpanded = !compareExpanded;
+    renderMain();
+  });
+  if(compareExpanded){
+    const dA = document.getElementById('compareDateA');
+    const dB = document.getElementById('compareDateB');
+    dA.addEventListener('change', (e)=>{
+      const nearest = nearestSnapshotOnOrBefore(e.target.value) || sortedDates()[0];
+      compareDateA = nearest;
+      renderCompare();
+    });
+    dB.addEventListener('change', (e)=>{
+      const nearest = nearestSnapshotOnOrBefore(e.target.value) || sortedDates()[0];
+      compareDateB = nearest;
+      renderCompare();
+    });
+  }
+  renderDonut(); renderStackedChart(); renderCashLineChart(); renderInvestLineChart();
+  renderMutationChart(); renderAllocationChart(); renderYearlyChart();
+  if(compareExpanded) renderCompare();
+  if(addEntryExpanded) renderEditor();
 }
 
 function newEntry(date){
@@ -628,11 +1223,63 @@ function renderAll(){
   renderPeriodRow(); renderStats(); renderLedger(); renderHero(); renderMain();
 }
 
-document.getElementById('newEntryBtn').addEventListener('click', ()=>{
-  newEntry(document.getElementById('jumpDate').value || todayISO());
-});
+function jumpToDate(date){
+  if(!date) return;
+  const dates = sortedDates();
+  if(dates.length===0) return;
+  let nearest = nearestSnapshotOnOrBefore(date);
+  if(!nearest) nearest = dates[0]; // gekozen datum ligt voor de eerste invoer
+  selectDate(nearest);
+}
 document.getElementById('jumpDate').addEventListener('change', (e)=>{
-  if(state.snapshots[e.target.value]) selectDate(e.target.value);
+  jumpToDate(e.target.value);
+});
+
+/* ---------- Export / import backup ---------- */
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const payload = JSON.stringify(state, null, 2);
+  const blob = new Blob([payload], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = todayISO();
+  a.href = url;
+  a.download = `grootboek-backup-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Back-up gedownload');
+});
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  document.getElementById('importFile').click();
+});
+document.getElementById('importFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async (ev)=>{
+    let parsed;
+    try{ parsed = JSON.parse(ev.target.result); }
+    catch(err){ showToast('Ongeldig bestand'); e.target.value=''; return; }
+    if(!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.categories) || typeof parsed.snapshots !== 'object'){
+      showToast('Bestand mist categorieën of invoer');
+      e.target.value='';
+      return;
+    }
+    const n = Object.keys(parsed.snapshots).length;
+    if(!confirm(`Dit vervangt je huidige gegevens door de back-up (${n} invoermomenten, ${parsed.categories.length} categorieën). Doorgaan?`)){
+      e.target.value='';
+      return;
+    }
+    state = { categories: parsed.categories, snapshots: parsed.snapshots };
+    await saveState();
+    const dates = sortedDates();
+    selectedDate = dates.length ? dates[dates.length-1] : null;
+    e.target.value = '';
+    showToast('Back-up geïmporteerd');
+    renderAll();
+  };
+  reader.readAsText(file);
 });
 
 (async function init(){
